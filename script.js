@@ -103,4 +103,78 @@ window.onload = () => {
         loadBalance();
     }
 };
+                // Konfigurasi Supabase tetap sama menggunakan URL & Key yang kamu kasih tadi
+
+async function handleRegister() {
+    const email = document.getElementById('reg-email').value;
+    const user = document.getElementById('reg-user').value;
+    const pass = document.getElementById('reg-pass').value;
+    const btn = document.getElementById('btn-reg');
+
+    if (!email || !user || !pass) return alert("Semua kolom wajib diisi!");
+
+    btn.innerText = "Mendaftarkan...";
+    btn.disabled = true;
+
+    try {
+        const response = await fetch(`${SUPABASE_URL}/users`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation'
+            },
+            body: JSON.stringify({
+                email: email,
+                username: user,
+                password: pass
+            })
+        });
+
+        if (response.ok) {
+            alert("Pendaftaran Berhasil! Silakan Login.");
+            window.location.href = "login.html";
+        } else {
+            const errorData = await response.json();
+            alert("Gagal daftar: " + errorData.message);
+            btn.disabled = false;
+            btn.innerText = "DAFTAR SEKARANG";
+        }
+    } catch (error) {
+        alert("Koneksi ke database bermasalah!");
+        btn.disabled = false;
+    }
+}
+
+// Update fungsi Login untuk menggunakan Email
+async function handleLogin() {
+    const email = document.getElementById('login-user').value; // Input di login.html ganti jadi email
+    const pass = document.getElementById('login-pass').value;
+    const btn = document.getElementById('btn-login');
+
+    btn.innerText = "Mengecek...";
+
+    try {
+        const response = await fetch(`${SUPABASE_URL}/users?email=eq.${email}&password=eq.${pass}`, {
+            method: 'GET',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.length > 0) {
+            localStorage.setItem('donutsmp_user', data[0].username);
+            window.location.href = "index.html";
+        } else {
+            alert("Email atau Password salah!");
+            btn.innerText = "MASUK SEKARANG";
+        }
+    } catch (error) {
+        alert("Gagal konek ke database!");
+    }
+                                        }
                 
