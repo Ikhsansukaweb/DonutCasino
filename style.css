@@ -1,0 +1,86 @@
+:root {
+    --bg-dark: #0f1923;
+    --card-bg: #1a242d;
+    --accent: #00e701; /* Warna hijau khas kasino */
+    --text-main: #ffffff;
+    --text-dim: #808a94;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-bottom: 50px;
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid #2a3744;
+}
+
+.logo { font-weight: bold; font-size: 20px; }
+.logo span { color: var(--accent); }
+
+.wallet {
+    background: #0d131a;
+    padding: 8px 15px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--accent);
+}
+
+.btn-deposit {
+    background: #2a3744;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Game Grid */
+main { padding: 20px 5%; }
+.section-title { font-size: 18px; margin-bottom: 20px; }
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.game-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+}
+
+.game-card:hover { transform: translateY(-5px); }
+
+.game-card img { width: 100%; height: auto; display: block; }
+
+.badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: #ff4d4d;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    z-index: 2;
+}
+
+.game-info { padding: 10px; text-align: center; }
+.game-info h3 { margin: 0; font-size: 14px; }
+.game-info span { font-size: 11px; color: var(--text-dim); }
+  
