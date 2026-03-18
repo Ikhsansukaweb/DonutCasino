@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar | Donut Casino</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="logo">🍩 DONUT<span>CASINO</span></div>
+        <h2>Buat Akun Baru</h2>
+        <p>Daftar untuk mulai bermain</p>
+        
+        <form id="regForm">
+            <div class="input-group">
+                <input type="email" id="reg-email" placeholder="Alamat Email Aktif" required>
+            </div>
+            <div class="input-group">
+                <input type="text" id="reg-user" placeholder="Username Minecraft (IGN)" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="reg-pass" placeholder="Buat Password" required>
+            </div>
+            <button type="button" onclick="handleRegister()" id="btn-reg">DAFTAR SEKARANG</button>
+        </form>
+        
+        <p class="footer-text">Sudah punya akun? <a href="login.html" style="color:var(--accent)">Login di sini</a></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
