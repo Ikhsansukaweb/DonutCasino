@@ -25,7 +25,7 @@ cards.forEach(card => {
     });
 });
   
-            const SUPABASE_URL = "https://alpiwaraxijqguwunroa.supabase.co/rest/v1";
+                const SUPABASE_URL = "https://alpiwaraxijqguwunroa.supabase.co/rest/v1";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFscGl3YXJheGlqcWd1d3Vucm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4MjY2MjMsImV4cCI6MjA4OTQwMjYyM30.WBaZGe4bEOcKdUXHEUe9nCtgfGO_ego6j0IfTcpiPY0";
 
 // --- FUNGSI DAFTAR ---
@@ -35,11 +35,9 @@ async function handleRegister() {
     const pass = document.getElementById('reg-pass').value;
     const btn = document.getElementById('btn-reg');
 
-    if (!email || !user || !pass) {
-        return alert("Woi! Isi semua kolomnya dulu.");
-    }
+    if (!email || !user || !pass) return alert("Isi semua data dulu, Bos!");
 
-    btn.innerText = "Sabar, lagi daftar...";
+    btn.innerText = "Proses Daftar...";
     btn.disabled = true;
 
     try {
@@ -51,23 +49,17 @@ async function handleRegister() {
                 'Content-Type': 'application/json',
                 'Prefer': 'return=minimal'
             },
-            body: JSON.stringify({
-                email: email,
-                username: user,
-                password: pass
-            })
+            body: JSON.stringify({ email: email, username: user, password: pass })
         });
 
         if (response.ok) {
-            alert("Pendaftaran Berhasil! Sekarang silakan Login.");
+            alert("Pendaftaran Sukses! Silakan login.");
             window.location.href = "login.html";
         } else {
-            const errorText = await response.text();
-            console.error(errorText);
-            alert("Gagal Daftar! Cek lagi apakah Email/Username sudah dipakai.");
+            alert("Gagal daftar. Email atau Username mungkin sudah terpakai.");
         }
     } catch (err) {
-        alert("Error: Gagal konek ke internet atau database.");
+        alert("Terjadi kesalahan koneksi.");
     } finally {
         btn.innerText = "DAFTAR SEKARANG";
         btn.disabled = false;
@@ -76,13 +68,13 @@ async function handleRegister() {
 
 // --- FUNGSI LOGIN ---
 async function handleLogin() {
-    const email = document.getElementById('login-user').value;
+    const email = document.getElementById('login-email').value;
     const pass = document.getElementById('login-pass').value;
     const btn = document.getElementById('btn-login');
 
-    if (!email || !pass) return alert("Email dan Password jangan dikosongin!");
+    if (!email || !pass) return alert("Email & Password wajib diisi!");
 
-    btn.innerText = "Lagi masuk...";
+    btn.innerText = "Mengecek Akun...";
     btn.disabled = true;
 
     try {
@@ -97,14 +89,18 @@ async function handleLogin() {
         const data = await response.json();
 
         if (data && data.length > 0) {
-            localStorage.setItem('donutsmp_user', data[0].username);
-            alert("Login Sukses! Gaspol.");
-            window.location.href = "index.html";
+            // SIMPAN DATA KE STORAGE (PENTING!)
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', data[0].email);
+            localStorage.setItem('userIGN', data[0].username); // Ini Username Minecraft-nya
+
+            alert("Login Sukses! Mengalihkan...");
+            window.location.href = "index.html"; // Langsung ke dashboard
         } else {
-            alert("Email atau Password salah, cek lagi kawan!");
+            alert("Email atau Password salah!");
         }
     } catch (err) {
-        alert("Ada gangguan koneksi!");
+        alert("Koneksi gagal!");
     } finally {
         btn.innerText = "MASUK SEKARANG";
         btn.disabled = false;
