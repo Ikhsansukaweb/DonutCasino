@@ -3,311 +3,220 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>DonutsMP Casino</title>
+<title>Login & Register DonutsMP Casino</title>
 <style>
-  /* Reset */
-  * {
-    box-sizing: border-box;
-  }
   body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 0;
     background: #0b123d;
+    font-family: Arial, sans-serif;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 60px; /* space for bottom nav */
   }
-
-  header {
+  #container {
     background: #121a4c;
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  header .logo {
-    display: flex;
-    align-items: center;
-  }
-  header .logo img {
-    width: 28px;
-    height: 28px;
-    margin-right: 10px;
-  }
-  header .logo span {
-    font-weight: 700;
-    font-size: 18px;
-  }
-  header .auth-buttons button {
-    background: #121a4c;
-    color: white;
-    border: 1.5px solid white;
-    border-radius: 6px;
-    padding: 6px 12px;
-    margin-left: 8px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  header .auth-buttons button.signup {
-    background: #176fff;
-    border-color: #176fff;
-  }
-
-  main {
-    padding: 16px;
-    flex: 1;
-    max-width: 480px;
-    margin: 0 auto;
+    padding: 24px 32px;
+    border-radius: 16px;
+    max-width: 400px;
     width: 100%;
   }
-
-  main h1 {
-    margin: 0 0 12px 0;
+  h1 {
+    margin-bottom: 24px;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 28px;
+    text-align: center;
   }
-
-  #searchGame {
+  label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  input[type="email"],
+  input[type="password"] {
     width: 100%;
-    padding: 12px 14px;
+    padding: 12px;
     border-radius: 10px;
     border: none;
+    margin-top: 6px;
     font-size: 16px;
-    margin-bottom: 16px;
-    outline: none;
   }
-
-  .game-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .game-card {
-    background: #1b2465;
-    border-radius: 12px;
-    padding: 8px;
-    position: relative;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease;
-  }
-  .game-card:hover {
-    box-shadow: 0 0 15px #247eff;
-  }
-  .game-card.new::before {
-    content: "New";
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background: #247eff;
-    padding: 2px 6px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 700;
-    color: white;
-  }
-  .game-card img {
+  button {
     width: 100%;
-    height: 84px;
-    border-radius: 8px;
-    object-fit: contain;
-    margin-bottom: 8px;
-    user-select: none;
-  }
-  .game-name {
+    margin-top: 18px;
+    padding: 14px;
+    font-size: 18px;
     font-weight: 700;
-    font-size: 14px;
-    line-height: 1;
-    margin-bottom: 4px;
-    user-select: none;
-  }
-  .game-provider {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #9db5ff;
-    user-select: none;
-  }
-
-  nav.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #121a4c;
-    border-top: 1px solid #253095;
-    display: flex;
-    justify-content: space-around;
-    padding: 8px 0 12px 0;
-    z-index: 9999;
-  }
-  nav.bottom-nav .nav-item {
-    color: #6c75be;
-    font-size: 10.5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
-    user-select: none;
+    color: white;
+    background: #176fff;
+    transition: background 0.3s ease;
   }
-  nav.bottom-nav .nav-item.active {
-    color: #176fff;
+  button:hover:not(:disabled) {
+    background: #0d4fff;
+  }
+  button:disabled {
+    background: #5791ff88;
+    cursor: default;
+  }
+  .toggle-btns {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .toggle-btns button {
+    width: auto;
+    margin: 0 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+    color: white;
     font-weight: 700;
   }
-  nav.bottom-nav .nav-item span.icon {
-    font-size: 20px;
+  .toggle-btns button.active {
+    background: white;
+    color: #176fff;
+    border-color: white;
   }
-
-  @media (min-width: 600px) {
-    main {
-      padding: 24px 32px;
-    }
-    .game-grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
+  #message {
+    margin-top: 14px;
+    min-height: 20px;
+    color: #ff6666;
+    font-weight: 600;
+    text-align: center;
+  }
+  #successMsg {
+    color: #7cff7c;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <img src="https://cdn-icons-png.flaticon.com/512/2838/2838751.png" alt="Logo" />
-    <span>BetDice</span>
+<div id="container">
+  <h1 id="formTitle">Masuk</h1>
+
+  <label for="emailInput">Email</label>
+  <input type="email" id="emailInput" placeholder="email@example.com" required />
+
+  <label for="passwordInput">Password</label>
+  <input type="password" id="passwordInput" placeholder="********" required />
+
+  <button id="submitBtn">Masuk</button>
+
+  <div id="message"></div>
+
+  <div class="toggle-btns">
+    <button id="btnLogin" class="active">Masuk</button>
+    <button id="btnRegister">Daftar</button>
   </div>
-  <div class="auth-buttons">
-    <button id="btnLogin">Masuk</button>
-    <button class="signup" id="btnRegister">Daftar</button>
-  </div>
-</header>
+</div>
 
-<main>
-  <h1>BetDice Originals</h1>
-  <input type="search" id="searchGame" placeholder="Cari Permainan..." />
-
-  <div class="game-grid" id="gameGrid">
-    <!-- Game cards akan diisi menggunakan JS -->
-  </div>
-</main>
-
-<nav class="bottom-nav">
-  <div class="nav-item active" data-target="jelajah"><span class="icon">🔍</span>Jelajah</div>
-  <div class="nav-item" data-target="beranda"><span class="icon">🏠</span>Beranda</div>
-  <div class="nav-item" data-target="dompet"><span class="icon">👛</span>Dompet</div>
-  <div class="nav-item" data-target="obrolan"><span class="icon">💬</span>Obrolan</div>
-</nav>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 <script>
-  const games = [
-    {
-      id: 1,
-      name: "HILO",
-      provider: "BetDice",
-      img: "https://cdn-icons-png.flaticon.com/512/1923/1923268.png",
-      isNew: true
-    },
-    {
-      id: 2,
-      name: "CASE BATTLES",
-      provider: "GrowDice",
-      img: "https://cdn-icons-png.flaticon.com/512/4740/4740472.png",
-      isNew: false
-    },
-    {
-      id: 3,
-      name: "CASES",
-      provider: "GrowDice",
-      img: "https://cdn-icons-png.flaticon.com/512/4413/4413698.png",
-      isNew: false
-    },
-    {
-      id: 4,
-      name: "REME",
-      provider: "GrowDice",
-      img: "https://cdn-icons-png.flaticon.com/512/4061/4061675.png",
-      isNew: false
-    },
-    {
-      id: 5,
-      name: "WHEEL",
-      provider: "GrowDice",
-      img: "https://cdn-icons-png.flaticon.com/512/1089/1089556.png",
-      isNew: false
-    },
-    {
-      id: 6,
-      name: "MINES",
-      provider: "GrowDice",
-      img: "https://cdn-icons-png.flaticon.com/512/658/658735.png",
-      isNew: false
-    },
-    {
-      id: 7,
-      name: "GAME 7",
-      provider: "GrowDice",
-      img: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png",
-      isNew: false
-    },
-    {
-      id: 8,
-      name: "GAME 8",
-      provider: "GrowDice",
-      img: "https://cdn-icons-png.flaticon.com/512/609/609803.png",
-      isNew: false
-    },
-    {
-      id: 9,
-      name: "GAME 9",
-      provider: "GrowDice",
-      img: "https://cdn-icons-png.flaticon.com/512/2965/2965567.png",
-      isNew: false
+  // Supabase config
+  const SUPABASE_URL = 'https://alpiwaraxijqguwunroa.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFscGl3YXJheGlqcWd1d3Vucm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4MjY2MjMsImV4cCI6MjA4OTQwMjYyM30.WBaZGe4bEOcKdUXHEUe9nCtgfGO_ego6j0IfTcpiPY0';
+  const supabase = supabase_js.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const formTitle = document.getElementById('formTitle');
+  const emailInput = document.getElementById('emailInput');
+  const passwordInput = document.getElementById('passwordInput');
+  const submitBtn = document.getElementById('submitBtn');
+  const messageDiv = document.getElementById('message');
+
+  const btnLoginToggle = document.getElementById('btnLogin');
+  const btnRegisterToggle = document.getElementById('btnRegister');
+
+  let mode = 'login'; // or 'register'
+
+  btnLoginToggle.onclick = () => {
+    mode = 'login';
+    formTitle.textContent = 'Masuk';
+    submitBtn.textContent = 'Masuk';
+    messageDiv.textContent = '';
+    btnLoginToggle.classList.add('active');
+    btnRegisterToggle.classList.remove('active');
+  };
+  btnRegisterToggle.onclick = () => {
+    mode = 'register';
+    formTitle.textContent = 'Daftar';
+    submitBtn.textContent = 'Daftar';
+    messageDiv.textContent = '';
+    btnRegisterToggle.classList.add('active');
+    btnLoginToggle.classList.remove('active');
+  };
+
+  submitBtn.onclick = async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if(!email || !password) {
+      messageDiv.textContent = "Isi email dan password dengan benar.";
+      return;
     }
-  ];
 
-  const gameGrid = document.getElementById('gameGrid');
-  const searchGame = document.getElementById('searchGame');
+    messageDiv.style.color = '#fff';
+    messageDiv.textContent = 'Processing...';
+    submitBtn.disabled = true;
 
-  function renderGames(filter = '') {
-    gameGrid.innerHTML = '';
-    const filtered = games.filter(g =>
-      g.name.toLowerCase().includes(filter.toLowerCase())
-    );
+    try {
+      if (mode === 'login') {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          throw error;
+        }
+        messageDiv.style.color = '#7cff7c';
+        messageDiv.textContent = 'Login berhasil! Memuat...';
 
-    filtered.forEach(game => {
-      const card = document.createElement('div');
-      card.className = 'game-card' + (game.isNew ? ' new' : '');
-      card.innerHTML = `
-        <img src="${game.img}" alt="${game.name}" loading="lazy" />
-        <div class="game-name">${game.name}</div>
-        <div class="game-provider">${game.provider}</div>
-      `;
-      gameGrid.appendChild(card);
-    });
-  }
+        // Redirect ke halaman utama (games)
+        setTimeout(() => {
+          window.location.href = 'games.html';
+        }, 1200);
 
-  searchGame.addEventListener('input', e => {
-    renderGames(e.target.value);
-  });
+      } else {
+        // Register mode
+        // Daftarkan user di Supabase auth
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        if (error) {
+          throw error;
+        }
+        messageDiv.style.color = '#7cff7c';
+        messageDiv.textContent = 'Pendaftaran berhasil! Cek email Anda untuk verifikasi.';
 
-  renderGames();
+        // Simpan data user di tabel users untuk saldo awal
+        if (data.user) {
+          const userId = data.user.id;
+          // Cek apakah user sudah ada
+          const { data: existingUser, error: errUser } = await supabase
+            .from('users')
+            .select('id')
+            .eq('id', userId)
+            .single();
 
-  // Navbar active toggle simulation — for demo only
-  const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-  navItems.forEach(item => {
-    item.addEventListener('click', () => {
-      navItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      alert(`Mode "${item.textContent}" belum tersedia, ini demo saja.`);
-    });
-  });
-
-  // Buttons Masuk / Daftar - hanya demo alert untuk ilustrasi
-  document.getElementById('btnLogin').onclick = () => alert('Fungsi Masuk belum tersedia pada demo HTML ini.');
-  document.getElementById('btnRegister').onclick = () => alert('Fungsi Daftar belum tersedia pada demo HTML ini.');
+          if (!existingUser) {
+            await supabase.from('users').insert([{
+              id: userId,
+              username: email.split('@')[0],
+              email: email,
+              donuts_balance: 100
+            }]);
+          }
+        }
+      }
+    } catch (err) {
+      messageDiv.style.color = '#ff6666';
+      messageDiv.textContent = err.message || 'Terjadi kesalahan';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  };
 </script>
 
 </body>
-                                                 </html>
+</html>
