@@ -84,3 +84,46 @@ main { padding: 20px 5%; }
 .game-info h3 { margin: 0; font-size: 14px; }
 .game-info span { font-size: 11px; color: var(--text-dim); }
   
+/* Styling Halaman Login */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    border: 1px solid #2a3744;
+}
+
+.input-group { margin-bottom: 15px; }
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    background: #0d131a;
+    border: 1px solid #2a3744;
+    color: white;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+#btn-login {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: black;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.footer-text { font-size: 12px; color: var(--text-dim); margin-top: 20px; }
+                
