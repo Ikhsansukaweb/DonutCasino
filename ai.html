@@ -3,191 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donut AI | Tuan Derr</title>
+    <title>Donut AI | Premium Chat</title>
     <style>
         :root {
-            --bg: #0f1923;
-            --card: #1a242d;
+            --bg-dark: #0e1117;
+            --sidebar-bg: #1d2333;
+            --bubble-user: #2b3a55;
+            --bubble-ai: #1a1d23;
             --accent: #00e701;
-            --text: #ffffff;
+            --text-main: #e6edf3;
+            --text-dim: #8b949e;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- UI CHAT UTAMA --- */
+        .main-chat {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            position: relative;
         }
 
-        /* Header */
         header {
-            background: var(--card);
-            padding: 15px;
-            text-align: center;
-            border-bottom: 2px solid var(--accent);
-            font-weight: bold;
+            padding: 15px 20px;
+            background: rgba(14, 17, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
         }
 
-        /* Chat Box */
-        #chat-container {
+        .logo-text { font-weight: 700; letter-spacing: 1px; }
+        .logo-text span { color: var(--accent); }
+
+        #chat-window {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            scroll-behavior: smooth;
         }
 
-        .bubble {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 15px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .user {
-            align-self: flex-end;
-            background: var(--accent);
-            color: black;
-            border-bottom-right-radius: 2px;
-        }
-
-        .ai {
-            align-self: flex-start;
-            background: var(--card);
-            border-bottom-left-radius: 2px;
-            border: 1px solid #2a3744;
-        }
-
-        /* Input Area */
-        .input-area {
-            background: var(--card);
-            padding: 15px;
+        /* --- BUBBLE STYLE (GEMINI STYLE) --- */
+        .message {
+            max-width: 85%;
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
         }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .user { align-self: flex-end; }
+        .ai { align-self: flex-start; }
+
+        .content {
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.6;
+            font-size: 15px;
+            white-space: pre-wrap;
+        }
+
+        .user .content {
+            background-color: var(--bubble-user);
+            border-bottom-right-radius: 4px;
+            color: #fff;
+        }
+
+        .ai .content {
+            background-color: var(--bubble-ai);
+            border-bottom-left-radius: 4px;
+            border: 1px solid #30363d;
+        }
+
+        .sender-name {
+            font-size: 11px;
+            margin-bottom: 5px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        /* --- INPUT BAR --- */
+        .input-container {
+            padding: 20px;
+            background: linear-gradient(transparent, var(--bg-dark));
+        }
+
+        .input-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #21262d;
+            border-radius: 25px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #30363d;
+            transition: 0.3s;
+        }
+
+        .input-wrapper:focus-within { border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 231, 1, 0.2); }
 
         input {
             flex: 1;
-            background: #0d131a;
-            border: 1px solid #2a3744;
+            background: none;
+            border: none;
             color: white;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px;
+            font-size: 15px;
             outline: none;
         }
 
-        button {
+        .send-btn {
             background: var(--accent);
+            color: black;
             border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-weight: bold;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
         }
 
-        button:disabled { background: #555; }
+        .send-btn:hover { transform: scale(1.1); }
+        .send-btn:disabled { background: #555; cursor: not-allowed; }
+
+        /* Typing Animation */
+        .typing { font-size: 12px; color: var(--accent); margin-bottom: 10px; display: none; }
     </style>
 </head>
 <body>
 
-<header>🍩 DONUT AI CHAT</header>
+<div class="main-chat">
+    <header>
+        <div class="logo-text">🍩 DONUT<span>AI</span></div>
+        <div id="status" style="font-size: 12px; color: var(--text-dim);">Online</div>
+    </header>
 
-<div id="chat-container">
+    <div id="chat-window">
+        </div>
+
+    <div class="input-container">
+        <div id="typing-indicator" class="typing">Donut AI sedang mengetik...</div>
+        <div class="input-wrapper">
+            <input type="text" id="userInput" placeholder="Tanya apa saja ke AI..." autocomplete="off">
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+            </button>
+        </div>
     </div>
-
-<div class="input-area">
-    <input type="text" id="userInput" placeholder="Tanya sesuatu..." onkeypress="if(event.key==='Enter') sendMessage()">
-    <button onclick="sendMessage()" id="sendBtn">KIRIM</button>
 </div>
 
 <script>
-    // KONFIGURASI (Ganti API_KEY_GEMINI dengan kunci dari Google AI Studio)
-    const GEMINI_API_KEY = "AIzaSyDGeRsKAxIpX5360GGPvzcSpuPGbgtkdNk";
+    // KONFIGURASI
+    const GROQ_API_KEY = "Gsk_H7hwzFPgyxuAmpbC3Ih0WGdyb3FY8wVPJlELiU8sykzPLHQKkEJV";
     const SUPABASE_URL = "https://alpiwaraxijqguwunroa.supabase.co/rest/v1";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFscGl3YXJheGlqcWd1d3Vucm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4MjY2MjMsImV4cCI6MjA4OTQwMjYyM30.WBaZGe4bEOcKdUXHEUe9nCtgfGO_ego6j0IfTcpiPY0";
     
-    // Ambil username dari login sebelumnya
-    const username = localStorage.getItem('userIGN') || "Guest";
+    const username = localStorage.getItem('userIGN') || "Tuan Derr";
+    const chatWindow = document.getElementById('chat-window');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const typingIndicator = document.getElementById('typing-indicator');
 
-    const chatContainer = document.getElementById('chat-container');
-
-    // 1. Fungsi Load History dari Supabase saat buka web
+    // 1. Ambil Riwayat dari Supabase
     async function loadHistory() {
         try {
             const res = await fetch(`${SUPABASE_URL}/chat_history?username=eq.${username}&order=created_at.asc`, {
                 headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
             });
             const data = await res.json();
-            data.forEach(chat => addBubble(chat.message, chat.role));
-        } catch (e) { console.error("Gagal muat riwayat"); }
+            data.forEach(msg => addBubble(msg.message, msg.role));
+        } catch (e) { console.error("History fail"); }
     }
 
-    // 2. Fungsi Kirim Pesan
+    // 2. Kirim Pesan ke Groq
     async function sendMessage() {
-        const input = document.getElementById('userInput');
-        const btn = document.getElementById('sendBtn');
-        const text = input.value.trim();
-        
+        const text = userInput.value.trim();
         if (!text) return;
 
-        input.value = "";
-        btn.disabled = true;
+        userInput.value = "";
+        sendBtn.disabled = true;
+        typingIndicator.style.display = "block";
 
-        // Tampilkan & Simpan chat User
         addBubble(text, 'user');
         await saveToDB(text, 'user');
 
         try {
-            // Panggil AI Gemini
-            const aiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                 method: "POST",
-                body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
+                headers: {
+                    "Authorization": `Bearer ${GROQ_API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: "llama-3.3-70b-versatile",
+                    messages: [{ role: "user", content: text }]
+                })
             });
-            const aiData = await aiRes.json();
-            const aiText = aiData.candidates[0].content.parts[0].text;
 
-            // Tampilkan & Simpan chat AI
-            addBubble(aiText, 'ai');
-            await saveToDB(aiText, 'ai');
+            const data = await response.json();
+            const aiResponse = data.choices[0].message.content;
+
+            addBubble(aiResponse, 'ai');
+            await saveToDB(aiResponse, 'ai');
         } catch (err) {
-            addBubble("Waduh, AI-nya lagi pusing. Coba lagi nanti!", 'ai');
+            addBubble("Waduh, koneksi ke otak AI terputus. Coba lagi ya!", 'ai');
         } finally {
-            btn.disabled = false;
+            sendBtn.disabled = false;
+            typingIndicator.style.display = "none";
         }
     }
 
-    // 3. Fungsi Simpan ke Database
+    // 3. Simpan Chat ke Database
     async function saveToDB(msg, role) {
         await fetch(`${SUPABASE_URL}/chat_history`, {
             method: 'POST',
             headers: {
                 'apikey': SUPABASE_KEY,
                 'Authorization': `Bearer ${SUPABASE_KEY}`,
-                'Content-Type': 'application/json',
-                'Prefer': 'return=minimal'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ username: username, message: msg, role: role })
         });
     }
 
-    // 4. Fungsi Tambah Bubble Chat ke Layar
+    // 4. Animasi Bubble Chat
     function addBubble(text, role) {
-        const div = document.createElement('div');
-        div.className = `bubble ${role}`;
-        div.innerText = text;
-        chatContainer.appendChild(div);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${role}`;
+        
+        const name = role === 'user' ? username : "Donut AI";
+        msgDiv.innerHTML = `
+            <span class="sender-name">${name}</span>
+            <div class="content">${text}</div>
+        `;
+        
+        chatWindow.appendChild(msgDiv);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 
-    // Jalankan load riwayat saat pertama buka
+    // Enter Key Support
+    userInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+
+    // Start
     loadHistory();
 </script>
-
 </body>
-  </html>
-  
+</html>
