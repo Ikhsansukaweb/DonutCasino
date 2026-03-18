@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar | Donut Casino</title>
+    <title>Login | Donut Casino</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-page">
     <div class="login-container">
         <div class="logo">🍩 DONUT<span>CASINO</span></div>
-        <h2>Buat Akun Baru</h2>
-        <p>Gunakan Email aktif kamu</p>
+        <h2>Selamat Datang</h2>
+        <p>Masukan Email dan Password kamu</p>
         
-        <div class="input-group">
-            <input type="email" id="reg-email" placeholder="Alamat Email" required>
-        </div>
-        <div class="input-group">
-            <input type="text" id="reg-user" placeholder="Username Minecraft (IGN)" required>
-        </div>
-        <div class="input-group">
-            <input type="password" id="reg-pass" placeholder="Buat Password" required>
-        </div>
-        <button onclick="handleRegister()" id="btn-reg">DAFTAR SEKARANG</button>
-        <p class="footer-text">Sudah punya akun? <a href="login.html" style="color:var(--accent)">Login di sini</a></p>
+        <form id="loginForm">
+            <div class="input-group">
+                <input type="email" id="login-email" placeholder="Alamat Email" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="login-pass" placeholder="Password" required>
+            </div>
+            <button type="button" onclick="handleLogin()" id="btn-login">MASUK SEKARANG</button>
+        </form>
+        
+        <p class="footer-text">Belum punya akun? <a href="register.html" style="color:var(--accent)">Daftar di sini</a></p>
     </div>
     <script src="script.js"></script>
 </body>
