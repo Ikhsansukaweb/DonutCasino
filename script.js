@@ -106,3 +106,56 @@ async function handleLogin() {
         btn.disabled = false;
     }
 }
+// --- FUNGSI TAMPILKAN DATA DI INDEX ---
+function displayUserData() {
+    // Cek apakah user sudah login
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const userIGN = localStorage.getItem('userIGN');
+
+    if (isLoggedIn !== 'true') {
+        // Jika belum login, tendang balik ke login.html
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Tampilkan Nama di Dashboard (Jika ada elemen dengan id="display-name")
+    const nameElement = document.getElementById('user-name'); 
+    if (nameElement) {
+        nameElement.innerText = userIGN;
+    }
+
+    // Panggil fungsi ambil saldo dari database balances
+    loadUserBalance(userIGN);
+}
+
+// Fungsi Ambil Saldo Real-time dari Supabase
+async function loadUserBalance(username) {
+    try {
+        const response = await fetch(`${SUPABASE_URL}/balances?username=eq.${username}`, {
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`
+            }
+        });
+        const data = await response.json();
+        if (data.length > 0) {
+            document.getElementById('balance').innerText = data[0].koin_balance.toLocaleString();
+        }
+    } catch (err) {
+        console.log("Gagal memuat saldo");
+    }
+}
+
+// Jalankan pengecekan setiap kali halaman dimuat
+window.onload = function() {
+    // Jika kita berada di halaman index.html
+    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+        displayUserData();
+    }
+};
+
+// Fungsi Logout
+function handleLogout() {
+    localStorage.clear(); // Hapus semua data login
+    window.location.href = "login.html";
+                }
